@@ -5,3 +5,23 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+
+/*
+const nextConfig = {
+  compiler: {
+    styledComponents: true,
+  },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/",
+        permanent: true,
+      },
+    ];
+  },
+};
+
+module.exports = nextConfig;
+
+*/
