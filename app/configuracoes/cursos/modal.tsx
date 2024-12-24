@@ -12,19 +12,21 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Select,
+  SelectItem,
   useDisclosure,
 } from "@nextui-org/react";
 import {
   create,
   deleteEntity,
   edit,
-} from "@/service/actions/faculdades-service";
+} from "@/service/actions/cursos-service";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 
-const FaculdadesModal = ({ data }: { data: FaculdadesModel[] }) => {
+const CursosModal = ({ data, faculdades }: { data: CursosModel[], faculdades: FaculdadesModel[] }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [entity, setEntity] = useState({} as FaculdadesModel);
+  const [entity, setEntity] = useState({} as CursosModel);
 
   const { toast } = useToast();
   const router = useRouter();
@@ -67,7 +69,7 @@ const FaculdadesModal = ({ data }: { data: FaculdadesModel[] }) => {
         description: "Não foi possivel salvar!",
         duration: 3000,
       });
-      setEntity({} as FaculdadesModel)
+      setEntity({} as CursosModel)
     } else {
       router.refresh();
       toast({
@@ -75,7 +77,7 @@ const FaculdadesModal = ({ data }: { data: FaculdadesModel[] }) => {
         description: "Faculdade Salva!",
         duration: 3000,
       });
-      setEntity({} as FaculdadesModel)
+      setEntity({} as CursosModel)
     }
     onOpenChange();
   };
@@ -99,7 +101,7 @@ const FaculdadesModal = ({ data }: { data: FaculdadesModel[] }) => {
         onOpenChange={onOpenChange}
         isDismissable={false}
         placement="top-center"
-        onClose={() => setEntity({} as FaculdadesModel)}
+        onClose={() => setEntity({} as CursosModel)}
         classNames={{
           body: "py-6",
           backdrop: "bg-[#0b101f]/50 backdrop-opacity-40",
@@ -113,17 +115,26 @@ const FaculdadesModal = ({ data }: { data: FaculdadesModel[] }) => {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {entity.id ? "Editar Faculdade" : "Nova Faculdade"}
+                {entity.id ? "Editar Curso" : "Novo Curso"}
               </ModalHeader>
               <ModalBody>
                 <Input
                   autoFocus
-                  label="Faculdade"
-                  placeholder="Digite o nome da faculdade"
+                  label="Curso"
+                  placeholder="Digite o nome do curso"
                   variant="bordered"
                   value={entity.nome}
                   onChange={(e) => setEntity({ ...entity, nome: e.target.value })}
                 />
+                <Select 
+                  label="Selecione uma faculdade"
+                  onChange={(e) => setEntity({ ...entity, faculdade: { id: e.target.value, nome: e.target.value } })}
+                  selectedKeys={entity.faculdade ? [entity.faculdade.id.toString()] : []}
+                >
+                  {faculdades.map((faculdade) => (
+                    <SelectItem key={faculdade.id}>{faculdade.nome}</SelectItem>
+                  ))}
+                </Select>
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="flat" onPress={onClose}>
@@ -141,4 +152,4 @@ const FaculdadesModal = ({ data }: { data: FaculdadesModel[] }) => {
   );
 };
 
-export default FaculdadesModal;
+export default CursosModal;

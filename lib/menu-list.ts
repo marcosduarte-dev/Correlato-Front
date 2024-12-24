@@ -93,9 +93,9 @@ import {
             submenus: [],
           },
           {
-            href: "/configuracoes/curso",
+            href: "/configuracoes/cursos",
             label: "Curso",
-            active: pathname.includes("/configuracoes/curso"),
+            active: pathname.includes("/configuracoes/cursos"),
             icon: ShieldMinus,
             submenus: [],
           },

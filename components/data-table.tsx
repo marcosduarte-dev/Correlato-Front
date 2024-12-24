@@ -39,7 +39,18 @@ const DataTable = ({ columns, data, onEdit, onDelete }: DataTableProps) => {
   const { toast } = useToast();
 
   const renderCell = React.useCallback((obj: any, columnKey: React.Key) => {
-    const cellValue = obj[columnKey as keyof any];
+    // const cellValue = obj[columnKey as keyof any];
+
+    let cellValue;
+
+    if (typeof columnKey === 'string') {
+      if (columnKey === "faculdade.nome") {
+          cellValue = obj.faculdade ? obj.faculdade.nome : "";
+      } else {
+          cellValue = obj[columnKey as keyof any];
+      }
+  }
+
 
     switch (columnKey) {
       case "ativo":
@@ -142,6 +153,8 @@ const DataTable = ({ columns, data, onEdit, onDelete }: DataTableProps) => {
   const items = React.useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
+
+    console.table(list.items);
 
     return list.items.slice(start, end);
   }, [page, list.items]);
