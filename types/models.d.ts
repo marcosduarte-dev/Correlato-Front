@@ -10,3 +10,14 @@ declare type CursosModel = {
     faculdade: FaculdadesModel;
     ativo?: string;
 };
+
+declare type DisciplinasModel = {
+    id: string;
+    codDisciplina: string;
+    nome: string;
+    curso: CursosModel;
+    cargaHoraria: number;
+    ementa: string;
+    programa: string;
+    ativo?: string;
+};

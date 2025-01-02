@@ -100,9 +100,9 @@ import {
             submenus: [],
           },
           {
-            href: "/configuracoes/disciplina",
+            href: "/configuracoes/disciplinas",
             label: "Disciplina",
-            active: pathname.includes("/configuracoes/disciplina"),
+            active: pathname.includes("/configuracoes/disciplinas"),
             icon: Earth,
             submenus: [],
           },

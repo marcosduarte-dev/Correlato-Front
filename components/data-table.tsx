@@ -44,10 +44,19 @@ const DataTable = ({ columns, data, onEdit, onDelete }: DataTableProps) => {
     let cellValue;
 
     if (typeof columnKey === 'string') {
-      if (columnKey === "faculdade.nome") {
+      switch (columnKey) {
+        case "faculdade.nome":
           cellValue = obj.faculdade ? obj.faculdade.nome : "";
-      } else {
+          break;
+        case "curso.nome":
+          cellValue = obj.curso ? obj.curso.nome : "";
+          break;
+        case "curso.faculdade.nome":
+          cellValue = obj.curso.faculdade ? obj.curso.faculdade.nome : ""
+          break;
+        default:
           cellValue = obj[columnKey as keyof any];
+          break;
       }
   }
 

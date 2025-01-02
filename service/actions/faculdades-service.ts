@@ -10,6 +10,10 @@ export async function get() {
       cache: "no-store",
     });
 
+    if (!response.ok) {
+      return [];
+    }
+
     const result = await response.json();
 
     return result;
@@ -27,6 +31,10 @@ export async function getAtivos() {
       },
       cache: "no-store",
     });
+
+    if (!response.ok) {
+      return [];
+    }
 
     const result = await response.json();
 
