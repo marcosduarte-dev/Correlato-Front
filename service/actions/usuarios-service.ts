@@ -1,13 +1,12 @@
 "use server";
 
-import { parseCookies } from "nookies";
+import { cookies } from "next/headers";
 
-export async function getById(id: any, token: string) {
-    console.log("GETBYID")
+export async function getById(id: any) {
+    const cookieStore = cookies();
+    const token = (await cookieStore).get('correlato-token')?.value;
+
     try {
-
-        console.log(token)
-
       const response = await fetch(`${process.env.API_URL}/usuarios/${id}`, {
         method: "GET",
         headers: {
@@ -18,9 +17,6 @@ export async function getById(id: any, token: string) {
       });
   
       const result = await response.json();
-
-      console.log(response)
-
   
       return result;
     } catch (error) {
@@ -29,8 +25,6 @@ export async function getById(id: any, token: string) {
   }
 
 export async function login(loginDTO: any) {
-    const { 'correlato-token': token } = parseCookies();
-
     try {
       const response = await fetch(`${process.env.API_URL}/usuarios/login`, {
         method: "POST",

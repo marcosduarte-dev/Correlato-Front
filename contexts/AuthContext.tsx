@@ -31,7 +31,7 @@ export function AuthProvider({ children }: any) {
             const decodedToken = jwtDecode(token.toString());
             const userId = decodedToken.sub;
 
-            getById(userId, token).then((usuario) => {
+            getById(userId).then((usuario) => {
                 setUser(usuario);
             });
         }
@@ -53,7 +53,7 @@ export function AuthProvider({ children }: any) {
           const decodedToken = jwtDecode(token.toString());
           const userId = decodedToken.sub;
 
-          const usuario = await getById(userId, token);
+          const usuario = await getById(userId);
 
           setUser(usuario);
 

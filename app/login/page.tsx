@@ -17,7 +17,6 @@ export default function Login() {
     const toggleVisibility = () => setIsVisible(!isVisible);
 
     async function handleSignIn(data: any) {
-        console.log(data);
         await signIn(data);
 
         // COLOCAR MENSAGEM DE ERRO

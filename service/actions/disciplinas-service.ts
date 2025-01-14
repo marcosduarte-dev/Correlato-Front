@@ -1,11 +1,17 @@
 "use server";
 
+import { cookies } from "next/headers";
+
 export async function get() {
+  const cookieStore = cookies();
+  const token = (await cookieStore).get('correlato-token')?.value;
+
   try {
     const response = await fetch(`${process.env.API_URL}/disciplinas`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
       cache: "no-store",
     });
@@ -23,11 +29,15 @@ export async function get() {
 }
 
 export async function getAtivos() {
+  const cookieStore = cookies();
+  const token = (await cookieStore).get('correlato-token')?.value;
+
   try {
     const response = await fetch(`${process.env.API_URL}/disciplinas/ativos`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
       cache: "no-store",
     });
@@ -45,6 +55,9 @@ export async function getAtivos() {
 }
 
 export async function create(data: DisciplinasModel) {
+  const cookieStore = cookies();
+  const token = (await cookieStore).get('correlato-token')?.value;
+
   try {
 
     const dataDTO = {
@@ -60,6 +73,7 @@ export async function create(data: DisciplinasModel) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
       },
       body: JSON.stringify(dataDTO),
       cache: "no-store",
@@ -74,6 +88,9 @@ export async function create(data: DisciplinasModel) {
 }
 
 export async function edit(data: DisciplinasModel) {
+  const cookieStore = cookies();
+  const token = (await cookieStore).get('correlato-token')?.value;
+
   try {
 
     const dataDTO = {
@@ -90,6 +107,7 @@ export async function edit(data: DisciplinasModel) {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify(dataDTO),
       cache: "no-store",
@@ -104,11 +122,15 @@ export async function edit(data: DisciplinasModel) {
 }
 
 export async function deleteEntity(id: any) {
+  const cookieStore = cookies();
+  const token = (await cookieStore).get('correlato-token')?.value;
+
   try {
     const response = await fetch(`${process.env.API_URL}/disciplinas/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
       cache: "no-store",
     });

@@ -74,7 +74,7 @@ const CursosModal = ({ data, faculdades }: { data: CursosModel[], faculdades: Fa
       router.refresh();
       toast({
         title: "Sucesso!",
-        description: "Faculdade Salva!",
+        description: "Cursos Salvo!",
         duration: 3000,
       });
       setEntity({} as CursosModel)
