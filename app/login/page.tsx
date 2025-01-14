@@ -1,19 +1,26 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import {Button, Input, Checkbox, Link, Form, Divider} from "@nextui-org/react";
 import {Icon} from "@iconify/react";
+import { useForm } from "react-hook-form";
 
 import { AcmeIcon } from "./acme"; 
+import { AuthContext } from "@/contexts/AuthContext";
 
 export default function Login() {
+    const { register, handleSubmit } = useForm();
+    const { signIn } = useContext(AuthContext);
+
     const [isVisible, setIsVisible] = React.useState(false);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        console.log("handleSubmit");
+    async function handleSignIn(data: any) {
+        console.log(data);
+        await signIn(data);
+
+        // COLOCAR MENSAGEM DE ERRO
     };
 
 
@@ -25,8 +32,9 @@ export default function Login() {
           <p className="text-xl font-medium">Seja Bem-vindo de volta </p>
           <p className="text-small text-default-500">Você precisa logar para continuar!</p>
         </div>
-        <Form className="flex flex-col gap-3" validationBehavior="native" onSubmit={handleSubmit}>
+        <Form className="flex flex-col gap-3" validationBehavior="native" onSubmit={handleSubmit(handleSignIn)}>
           <Input
+            {...register("email")}
             isRequired
             label="Email"
             name="email"
@@ -35,6 +43,7 @@ export default function Login() {
             variant="bordered"
           />
           <Input
+            {...register("password")}
             isRequired
             endContent={
               <button type="button" onClick={toggleVisibility}>

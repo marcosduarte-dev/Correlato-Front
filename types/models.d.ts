@@ -21,3 +21,12 @@ declare type DisciplinasModel = {
     programa: string;
     ativo?: string;
 };
+
+declare type UsuariosModel = {
+    id: string;
+    nome: string;
+    email: string;
+    faculdade: FaculdadesModel;
+    tipo: string;
+    ativo?: string;
+};
