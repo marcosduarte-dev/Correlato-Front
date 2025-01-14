@@ -23,6 +23,8 @@ import {
 } from "@/service/actions/cursos-service";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
 
 const CursosModal = ({ data, faculdades }: { data: CursosModel[], faculdades: FaculdadesModel[] }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -151,5 +153,6 @@ const CursosModal = ({ data, faculdades }: { data: CursosModel[], faculdades: Fa
     </main>
   );
 };
+
 
 export default CursosModal;
