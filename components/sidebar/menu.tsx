@@ -30,8 +30,6 @@ export function Menu({ isOpen }: MenuProps) {
     router.push("/login");
   }
 
-  console.log(user?.tipo)
-
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
       <nav className="mt-8 h-full w-full">

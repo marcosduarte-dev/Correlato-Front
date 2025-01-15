@@ -30,3 +30,12 @@ declare type UsuariosModel = {
     tipo: string;
     ativo?: string;
 };
+
+declare type AnaliseEquivalenciasModel = {
+    id: string;
+    professorResponsavel: UsuariosModel;
+    disciplinaOrigem: DisciplinasModel;
+    disciplinaDestino: DisciplinasModel;
+    status: string;
+    aprovado?: string;
+};

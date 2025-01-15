@@ -11,9 +11,8 @@ declare type Collumns = {
     onDelete: Function;
   };
   
-  declare type HomePageProps = {
-    status: StatusModel[];
-    data: RegistroModel[];
+  declare type AnaliseEquivalenciaProps = {
+    data: AnaliseEquivalenciasModel[];
   };
   
   export type IconSvgProps = SVGProps<SVGSVGElement> & {

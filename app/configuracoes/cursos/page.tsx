@@ -3,8 +3,8 @@ import { ContentLayout } from "@/components/sidebar/content-layout";
 import { get } from "@/service/actions/cursos-service";
 import CursosModal from "./modal";
 import { getAtivos } from "@/service/actions/faculdades-service";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { getAuthToken } from "@/lib/getAuthToken";
 
 async function getData(): Promise<CursosModel[]> {
   return await get();
@@ -18,8 +18,7 @@ const CursosProvider = async () => {
   const data = await getData();
   const faculdadesData = await getFaculdadesData();
 
-  const cookieStore = cookies();
-  const token = (await cookieStore).get('correlato-token')?.value;
+  const token = await getAuthToken();
 
   if (!token) {
     redirect("/login");

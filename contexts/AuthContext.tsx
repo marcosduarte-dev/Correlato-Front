@@ -57,7 +57,7 @@ export function AuthProvider({ children }: any) {
 
           setUser(usuario);
 
-          router.push('/');
+          router.push('/analise-equivalencias');
     }
 
   return <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>{children}</AuthContext.Provider>;

@@ -163,8 +163,6 @@ const DataTable = ({ columns, data, onEdit, onDelete }: DataTableProps) => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    console.table(list.items);
-
     return list.items.slice(start, end);
   }, [page, list.items]);
 

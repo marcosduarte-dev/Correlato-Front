@@ -37,9 +37,9 @@ import {
         groupLabel: "",
         menus: [
           {
-            href: "/homepage",
-            label: "Home",
-            active: pathname.includes("/homepage"),
+            href: "/analise-equivalencias",
+            label: "Analise Equivalencias",
+            active: pathname.includes("/analise-equivalencias"),
             icon: LayoutGrid,
             submenus: [],
           },
@@ -66,13 +66,13 @@ import {
               },
             ],
           },
-          {
-            href: "/analise-equivalencias",
-            label: "Analise Equivalencias",
-            active: pathname.includes("/analise-equivalencias"),
-            icon: Bookmark,
-            submenus: [],
-          },
+          // {
+          //   href: "/analise-equivalencias",
+          //   label: "Analise Equivalencias",
+          //   active: pathname.includes("/analise-equivalencias"),
+          //   icon: Bookmark,
+          //   submenus: [],
+          // },
           {
             href: "/ia-response",
             label: "IA Response",
