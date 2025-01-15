@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Ellipsis, LogOut } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -15,16 +15,29 @@ import {
 } from "@/components/ui/tooltip";
 import { getMenuList } from "@/lib/menu-list"; 
 import { MenuProps } from "@/types/sidebar";
+import { useContext } from "react";
+import { AuthContext } from "@/contexts/AuthContext";
+import { destroyCookie } from "nookies";
 
 export function Menu({ isOpen }: MenuProps) {
   const pathname = usePathname();
   const menuList = getMenuList(pathname);
+  const  { user } = useContext(AuthContext);
+  const router = useRouter();
+
+  function handleLogout() {
+    destroyCookie(null, 'correlato-auth')
+    router.push("/login");
+  }
+
+  console.log(user?.tipo)
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
       <nav className="mt-8 h-full w-full">
         <ul className="flex flex-col min-h-[calc(100vh-48px-36px-16px-32px)] lg:min-h-[calc(100vh-32px-40px-32px)] items-start space-y-1 px-2">
           {menuList.map(({ groupLabel, menus }, index) => (
+            groupLabel === "Configurações" && user?.tipo !== "SECRETARIO" ? null : (
             <li className={cn("w-full", groupLabel ? "pt-5" : "")} key={index}>
               {(isOpen && groupLabel) || isOpen === undefined ? (
                 <p className="text-sm font-medium text-muted-foreground px-4 pb-2 max-w-[248px] truncate">
@@ -98,13 +111,14 @@ export function Menu({ isOpen }: MenuProps) {
                   )
               )}
             </li>
+          )
           ))}
-          {/* <li className="w-full grow flex items-end">
+          <li className="w-full grow flex items-end">
             <TooltipProvider disableHoverableContent>
               <Tooltip delayDuration={100}>
                 <TooltipTrigger asChild>
                   <Button
-                    onClick={() => {}}
+                    onClick={() => {handleLogout()}}
                     variant="outline"
                     className="w-full justify-center h-10 mt-5"
                   >
@@ -117,18 +131,17 @@ export function Menu({ isOpen }: MenuProps) {
                         isOpen === false ? "opacity-0 hidden" : "opacity-100"
                       )}
                     >
-                      Sign out
+                      Sair
                     </p>
                   </Button>
                 </TooltipTrigger>
                 {isOpen === false && (
-                  <TooltipContent side="right">Sign out</TooltipContent>
+                  <TooltipContent side="right">Sair</TooltipContent>
                 )}
               </Tooltip>
             </TooltipProvider>
-          </li> */}
+          </li>
         </ul>
       </nav>
     </ScrollArea>
-  );
-}
+  );}
