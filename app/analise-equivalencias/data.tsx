@@ -15,6 +15,11 @@ import {
   DropdownMenu,
   DropdownTrigger,
   Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
   Pagination,
   SortDescriptor,
   Table,
@@ -23,8 +28,11 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
+  useDisclosure,
 } from "@nextui-org/react";
 import React, { useState } from 'react';
+import { useToast } from "@/components/ui/use-toast";
+import { Steps, theme } from "antd";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
@@ -42,7 +50,56 @@ const INITIAL_VISIBLE_COLUMNS = [
 
 type Selection = string | Set<any>;
 
+const { useToken } = theme;
+
 const Data = ({ data }: AnaliseEquivalenciaProps) => {
+  const { token } = useToken();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [entity, setEntity] = useState({} as AnaliseEquivalenciasModel);
+
+  const { toast } = useToast();
+
+  const steps = [
+    {
+      title: 'Disciplina Origem',
+      content: <>
+        <Button color="danger" variant="flat">
+          Cancelar
+        </Button>
+      </>,
+    },
+    {
+      title: 'Disciplina Destino',
+      content: 'Second-content',
+    },
+    {
+      title: 'Finalizar',
+      content: 'Last-content',
+    },
+  ];
+
+  const [current, setCurrent] = useState(0);
+
+  const next = () => {
+    setCurrent(current + 1);
+  };
+
+  const prev = () => {
+    setCurrent(current - 1);
+  };
+
+  const stepItems = steps.map((item) => ({ key: item.title, title: item.title }));
+
+  const contentStyle: React.CSSProperties = {
+    lineHeight: '260px',
+    textAlign: 'center',
+    color: "white",
+    backgroundColor: token.colorFillAlter,
+    borderRadius: token.borderRadiusLG,
+    border: `1px dashed ${token.colorBorder}`,
+    marginTop: 16,
+  };
+
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(
     new Set([])
@@ -304,7 +361,7 @@ const Data = ({ data }: AnaliseEquivalenciaProps) => {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="primary" endContent={<PlusIcon />}>
+            <Button color="primary" endContent={<PlusIcon />} onPress={onOpen}>
               Novo
             </Button>
           </div>
@@ -377,6 +434,7 @@ const Data = ({ data }: AnaliseEquivalenciaProps) => {
   }, [selectedKeys, filteredItems.length, page, pages, onPreviousPage, onNextPage]);
 
   return (
+    <> 
     <Table
       aria-label="Tabela de Midias"
       isHeaderSticky
@@ -417,6 +475,63 @@ const Data = ({ data }: AnaliseEquivalenciaProps) => {
         )}
       </TableBody>
     </Table>
+
+    <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        isDismissable={false}
+        placement="top-center"
+        onClose={() => setEntity({} as AnaliseEquivalenciasModel)}
+        classNames={{
+          body: "py-6",
+          backdrop: "bg-[#0b101f]/50 backdrop-opacity-40",
+          base: "border-[#0b101f] bg-[#18181b] dark:bg-[#18181b] text-[#FFFFFF]",
+          header: "border-b-[1px] border-[#0b101f]",
+          footer: "border-t-[1px] border-[#0b101f]",
+          closeButton: "hover:bg-white/5 active:bg-white/10",
+        }}
+        size="5xl"
+      >
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Nova Analise de Equivalência
+              </ModalHeader>
+              <ModalBody>
+                <Steps current={current} items={stepItems} style={{ color: "white"}}/>
+                <div style={contentStyle}>{steps[current].content}</div>
+                <div style={{ marginTop: 24 }}>
+                  {current < steps.length - 1 && (
+                    <Button onClick={() => next()}>
+                      Next
+                    </Button>
+                  )}
+                  {current === steps.length - 1 && (
+                    <Button onClick={() => console.log("Complete")}>
+                      Done
+                    </Button>
+                  )}
+                  {current > 0 && (
+                    <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
+                      Previous
+                    </Button>
+                  )}
+                </div>
+              </ModalBody>
+              {/* <ModalFooter>
+                <Button color="danger" variant="flat" onPress={onClose}>
+                  Cancelar
+                </Button>
+                <Button color="secondary" onPress={() => handleSave()}>
+                  {entity.id ? "Editar" : "Criar"}
+                </Button>
+              </ModalFooter> */}
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 

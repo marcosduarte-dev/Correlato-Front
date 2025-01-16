@@ -5,6 +5,7 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Providers } from "./providers";
 import SideBarLayout from "@/components/sidebar/sidebar-layout";
 import { Toaster } from "@/components/ui/toaster";
+import { ConfigProvider, theme } from "antd";
 
 
 const geistSans = Geist({
@@ -33,10 +34,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <AntdRegistry>
+          <AntdRegistry >
               <SideBarLayout>{children}</SideBarLayout>
               <Toaster />
-            </AntdRegistry>
+          </AntdRegistry>
         </Providers>
       </body>
     </html>
