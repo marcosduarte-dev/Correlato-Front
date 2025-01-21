@@ -33,6 +33,7 @@ import {
 import React, { useState } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { Steps, theme } from "antd";
+import StepDisciplinaOrigem from "./step_disciplina_origem";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
@@ -63,9 +64,7 @@ const Data = ({ data }: AnaliseEquivalenciaProps) => {
     {
       title: 'Disciplina Origem',
       content: <>
-        <Button color="danger" variant="flat">
-          Cancelar
-        </Button>
+        <StepDisciplinaOrigem />
       </>,
     },
     {
@@ -503,17 +502,17 @@ const Data = ({ data }: AnaliseEquivalenciaProps) => {
                 <div style={contentStyle}>{steps[current].content}</div>
                 <div style={{ marginTop: 24 }}>
                   {current < steps.length - 1 && (
-                    <Button onClick={() => next()}>
+                    <Button onPress={() => next()}>
                       Next
                     </Button>
                   )}
                   {current === steps.length - 1 && (
-                    <Button onClick={() => console.log("Complete")}>
+                    <Button onPress={() => console.log("Complete")}>
                       Done
                     </Button>
                   )}
                   {current > 0 && (
-                    <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
+                    <Button style={{ margin: '0 8px' }} onPress={() => prev()}>
                       Previous
                     </Button>
                   )}
