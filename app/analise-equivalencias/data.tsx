@@ -4,7 +4,7 @@ import { PlusIcon } from "@/components/icons/PlusIcon";
 import { SearchIcon } from "@/components/icons/SearchIcon";
 import { VerticalDotsIcon } from "@/components/icons/VerticalDotsIcon";
 import { capitalize } from "@/lib/utils";
-import { AnaliseEquivalenciaProps } from "@/types/geral";
+import { AnaliseEquivalenciaProps, disciplinaOrigem } from "@/types/geral";
 import { columnsAnaliseEquivalencias } from "./columns";
 import {
   Button,
@@ -58,13 +58,15 @@ const Data = ({ data }: AnaliseEquivalenciaProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [entity, setEntity] = useState({} as AnaliseEquivalenciasModel);
 
+  const [disciplinaOrigem, setDisciplinaOrigem] = useState({} as disciplinaOrigem);
+
   const { toast } = useToast();
 
   const steps = [
     {
       title: 'Disciplina Origem',
       content: <>
-        <StepDisciplinaOrigem />
+        <StepDisciplinaOrigem disciplinaOrigem={disciplinaOrigem} setDisciplinaOrigem={setDisciplinaOrigem} />
       </>,
     },
     {

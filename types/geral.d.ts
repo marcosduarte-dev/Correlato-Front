@@ -18,3 +18,9 @@ declare type Collumns = {
   export type IconSvgProps = SVGProps<SVGSVGElement> & {
     size?: number;
   };
+
+  declare type disciplinaOrigem = {
+    faculdade: number;
+    curso: number;
+    disciplina: number;
+  };

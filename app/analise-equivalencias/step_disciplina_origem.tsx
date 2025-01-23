@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { create as createCurso } from "@/service/actions/cursos-service"
 import { create as createDisciplina } from "@/service/actions/disciplinas-service"
+import { disciplinaOrigem } from "@/types/geral";
 
 async function getFaculdadesData(): Promise<CursosModel[]> {
     return await getAtivos();
@@ -23,7 +24,7 @@ async function getDisciplinasData(id: any): Promise<DisciplinasModel[]> {
     return await getByCurso(id);
 }
 
-const StepDisciplinaOrigem = () => {
+const StepDisciplinaOrigem = ({ disciplinaOrigem, setDisciplinaOrigem }: { disciplinaOrigem: disciplinaOrigem, setDisciplinaOrigem: any}) => {
 
     const [faculdadeSelecionada, setFaculdadeSelecionada] = useState<number>();
     const [faculdadesData, setFaculdadesData] = useState<FaculdadesModel[]>([]);
@@ -45,10 +46,29 @@ const StepDisciplinaOrigem = () => {
 
     const [isRequesting, setIsRequesting] = useState(true);
 
-
-
     const { toast } = useToast();
     const router = useRouter();
+
+    const handleFaculdadeChange = (e: number) => {
+        setDisciplinaOrigem((prevDisciplinaOrigem: any) => ({
+          ...prevDisciplinaOrigem,
+          faculdade: e,
+        }));
+      };
+    
+      const handleCursoChange = (e: number) => {
+        setDisciplinaOrigem((prevDisciplinaOrigem: any) => ({
+          ...prevDisciplinaOrigem,
+          curso: e,
+        }));
+      };
+    
+      const handleDisciplinaChange = (e: number) => {
+        setDisciplinaOrigem((prevDisciplinaOrigem: any) => ({
+          ...prevDisciplinaOrigem,
+          disciplina: e,
+        }));
+      };
 
     const fetchFaculdades = async (isMounted: boolean, closeModal: boolean = false) => {
         try {
@@ -116,6 +136,16 @@ const StepDisciplinaOrigem = () => {
         setIsRequesting(true);
 
         fetchFaculdades(isMounted);
+
+        if (disciplinaOrigem.faculdade) {
+            setFaculdadeSelecionada(disciplinaOrigem.faculdade);
+        }
+        if (disciplinaOrigem.curso) {
+            setCursoSelecionado(disciplinaOrigem.curso);
+        }
+        if (disciplinaOrigem.disciplina) {
+            setDisciplinaSelecionado(disciplinaOrigem.disciplina);
+        }
 
         return () => {
             isMounted = false;
@@ -253,7 +283,10 @@ const StepDisciplinaOrigem = () => {
                 <div className="flex items-center gap-2 p-2">
                     <Select
                         label="Selecione uma faculdade"
-                        onChange={(e) => setFaculdadeSelecionada(Number(e.target.value))}
+                        onChange={(e) => {
+                            setFaculdadeSelecionada(Number(e.target.value))
+                            handleFaculdadeChange(Number(e.target.value))
+                        }}
                         selectedKeys={faculdadeSelecionada ? [faculdadeSelecionada.toString()] : []}
                         className="flex-1"
                     >
@@ -273,7 +306,10 @@ const StepDisciplinaOrigem = () => {
                 <div className="flex items-center gap-2 p-2">
                     <Select
                         label="Selecione um curso"
-                        onChange={(e) => setCursoSelecionado(Number(e.target.value))}
+                        onChange={(e) => {
+                            setCursoSelecionado(Number(e.target.value))
+                            handleCursoChange(Number(e.target.value))
+                        }}
                         selectedKeys={cursoSelecionado ? [cursoSelecionado.toString()] : []}
                     >
                         {cursosData.map((cursos) => (
@@ -293,7 +329,10 @@ const StepDisciplinaOrigem = () => {
                 <div className="flex items-center gap-2 p-2">
                     <Select
                         label="Selecione uma disciplina"
-                        onChange={(e) => setDisciplinaSelecionado(Number(e.target.value))}
+                        onChange={(e) => {
+                            setDisciplinaSelecionado(Number(e.target.value))
+                            handleDisciplinaChange(Number(e.target.value))
+                        }}
                         selectedKeys={disciplinaSelecionado ? [disciplinaSelecionado.toString()] : []}
                     >
                         {disciplinasData.map((disciplinas) => (
