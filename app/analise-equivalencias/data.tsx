@@ -4,7 +4,7 @@ import { PlusIcon } from "@/components/icons/PlusIcon";
 import { SearchIcon } from "@/components/icons/SearchIcon";
 import { VerticalDotsIcon } from "@/components/icons/VerticalDotsIcon";
 import { capitalize } from "@/lib/utils";
-import { AnaliseEquivalenciaProps, disciplinaOrigem } from "@/types/geral";
+import { AnaliseEquivalenciaProps, disciplinaDestino, disciplinaOrigem } from "@/types/geral";
 import { columnsAnaliseEquivalencias } from "./columns";
 import {
   Button,
@@ -34,6 +34,7 @@ import React, { useState } from 'react';
 import { useToast } from "@/components/ui/use-toast";
 import { Steps, theme } from "antd";
 import StepDisciplinaOrigem from "./step_disciplina_origem";
+import StepDisciplinaDestino from "./step_disciplina_destino";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
@@ -59,6 +60,7 @@ const Data = ({ data }: AnaliseEquivalenciaProps) => {
   const [entity, setEntity] = useState({} as AnaliseEquivalenciasModel);
 
   const [disciplinaOrigem, setDisciplinaOrigem] = useState({} as disciplinaOrigem);
+  const [disciplinaDestino, setDisciplinaDestino] = useState({} as disciplinaDestino);
 
   const { toast } = useToast();
 
@@ -71,7 +73,9 @@ const Data = ({ data }: AnaliseEquivalenciaProps) => {
     },
     {
       title: 'Disciplina Destino',
-      content: 'Second-content',
+      content: <>
+        <StepDisciplinaDestino disciplinaDestino={disciplinaDestino} setDisciplinaDestino={setDisciplinaDestino} />
+      </>,
     },
     {
       title: 'Finalizar',
@@ -482,7 +486,11 @@ const Data = ({ data }: AnaliseEquivalenciaProps) => {
         onOpenChange={onOpenChange}
         isDismissable={false}
         placement="top-center"
-        onClose={() => setEntity({} as AnaliseEquivalenciasModel)}
+        onClose={() => {
+          setEntity({} as AnaliseEquivalenciasModel)
+          setDisciplinaOrigem({} as disciplinaOrigem)
+          setDisciplinaDestino({} as disciplinaDestino)
+        }}
         classNames={{
           body: "py-6",
           backdrop: "bg-[#0b101f]/50 backdrop-opacity-40",
@@ -502,20 +510,22 @@ const Data = ({ data }: AnaliseEquivalenciaProps) => {
               <ModalBody>
                 <Steps current={current} items={stepItems} style={{ color: "white"}}/>
                 <div style={contentStyle}>{steps[current].content}</div>
-                <div style={{ marginTop: 24 }}>
+                <div style={{ marginTop: 24, display: 'flex', justifyContent: 'flex-end' }}>
+                  {current > 0 && (
+                    <Button style={{ margin: '0 8px' }} onPress={() => prev()}>
+                      Anterior
+                    </Button>
+                  )}
                   {current < steps.length - 1 && (
-                    <Button onPress={() => next()}>
-                      Next
+                    <Button onPress={() => next()}
+                      isDisabled={current === 0 ? !disciplinaOrigem.disciplina : !disciplinaOrigem.disciplina}
+                      >
+                      Próximo
                     </Button>
                   )}
                   {current === steps.length - 1 && (
                     <Button onPress={() => console.log("Complete")}>
-                      Done
-                    </Button>
-                  )}
-                  {current > 0 && (
-                    <Button style={{ margin: '0 8px' }} onPress={() => prev()}>
-                      Previous
+                      Salvar
                     </Button>
                   )}
                 </div>

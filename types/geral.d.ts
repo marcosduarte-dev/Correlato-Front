@@ -24,3 +24,9 @@ declare type Collumns = {
     curso: number;
     disciplina: number;
   };
+
+  declare type disciplinaDestino = {
+    faculdade: number;
+    curso: number;
+    disciplina: number;
+  };
