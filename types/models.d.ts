@@ -39,3 +39,10 @@ declare type AnaliseEquivalenciasModel = {
     status: string;
     aprovado?: string;
 };
+
+declare type CreateAnaliseEquivalencias = {
+    idDisciplinaOrigem: Number;
+    idDisciplinaDestino: Number;
+    idProfessorResponsavel: string;
+    status: string;
+};

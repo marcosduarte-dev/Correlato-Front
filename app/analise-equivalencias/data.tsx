@@ -35,6 +35,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { Steps, theme } from "antd";
 import StepDisciplinaOrigem from "./step_disciplina_origem";
 import StepDisciplinaDestino from "./step_disciplina_destino";
+import StepFinalizar from "./step_disciplina_finalizar";
+import { create } from "@/service/actions/analise-equivalencias-service";
+import { useRouter } from "next/navigation";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
@@ -61,8 +64,10 @@ const Data = ({ data }: AnaliseEquivalenciaProps) => {
 
   const [disciplinaOrigem, setDisciplinaOrigem] = useState({} as disciplinaOrigem);
   const [disciplinaDestino, setDisciplinaDestino] = useState({} as disciplinaDestino);
+  const [professorResponsavel, setProfessorResponsavel] = useState(String);
 
   const { toast } = useToast();
+  const router = useRouter();
 
   const steps = [
     {
@@ -79,7 +84,9 @@ const Data = ({ data }: AnaliseEquivalenciaProps) => {
     },
     {
       title: 'Finalizar',
-      content: 'Last-content',
+      content: <>
+      <StepFinalizar professorResponsavel={professorResponsavel} setProfessorResponsavel={setProfessorResponsavel} idFaculdadeSelecionada={disciplinaDestino.faculdade} />
+    </>,
     },
   ];
 
@@ -94,6 +101,39 @@ const Data = ({ data }: AnaliseEquivalenciaProps) => {
   };
 
   const stepItems = steps.map((item) => ({ key: item.title, title: item.title }));
+
+  const handleSave = async () => {
+    const analiseEquivalencia = {
+      idDisciplinaOrigem: disciplinaOrigem.disciplina,
+      idDisciplinaDestino: disciplinaDestino.disciplina,
+      idProfessorResponsavel: professorResponsavel,
+      status: "CRIADO"
+    } as CreateAnaliseEquivalencias;
+
+    let result;
+
+    result = await create(analiseEquivalencia);
+
+    if (result.id == undefined || result.statusCode == 400) {
+      toast({
+          title: "Erro!",
+          description: "Não foi possivel salvar!",
+          duration: 3000,
+      });
+    } else {
+        router.refresh();
+        toast({
+            title: "Sucesso!",
+            description: "Professor Salva!",
+            duration: 3000,
+        });
+        setDisciplinaDestino({} as disciplinaDestino);
+        setDisciplinaOrigem({} as disciplinaOrigem);
+        setProfessorResponsavel("");
+    }
+    // fetchProfessors(true, true);
+    onOpenChange();
+  }
 
   const contentStyle: React.CSSProperties = {
     lineHeight: '260px',
@@ -524,7 +564,7 @@ const Data = ({ data }: AnaliseEquivalenciaProps) => {
                     </Button>
                   )}
                   {current === steps.length - 1 && (
-                    <Button onPress={() => console.log("Complete")}>
+                    <Button onPress={() => handleSave()}>
                       Salvar
                     </Button>
                   )}
